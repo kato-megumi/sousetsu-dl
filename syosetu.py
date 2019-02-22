@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from bs4 import BeautifulSoup as bs
 import requests
 from ebooklib import epub
@@ -30,7 +31,7 @@ book.add_item(nav_css)
 
 intro =  epub.EpubHtml(title="Introduction", file_name="Introduction"+'.xhtml',lang='jp')
 intro.book=book
-intro.set_content(str(soup.find("", {"id": "novel_ex"})))
+intro.set_content(str(soup.find("", {"id": "novel_ex"})).replace("</rb>","").replace("<rb>","").replace("<rp>(</rp>",""))
 book.add_item(intro)
 spine = ['nav',intro]
 for x in soup.findAll("dd",class_="subtitle"):
@@ -38,6 +39,7 @@ for x in soup.findAll("dd",class_="subtitle"):
 	chap_soup= bs(requests.get(link).text,features="lxml")
 	title = chap_soup.find("", {"class": "novel_subtitle"}).text
 	body = str(chap_soup.find("", {"class": "novel_honbun"}))
+	body = body.replace("</rb>","").replace("<rb>","").replace("<rp>(</rp>","")
 	c = epub.EpubHtml(title=title, file_name=title+'.xhtml',lang='jp')
 	c.book=book
 	c.set_content("<h2>"+title+"</h2>"+body)
