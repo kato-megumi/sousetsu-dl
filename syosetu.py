@@ -34,18 +34,20 @@ intro.book=book
 intro.set_content(str(soup.find("", {"id": "novel_ex"})).replace("</rb>","").replace("<rb>","").replace("<rp>(</rp>",""))
 book.add_item(intro)
 spine = ['nav',intro]
+t=1
 for x in soup.findAll("dd",class_="subtitle"):
 	link = web+x.find('a')['href']
 	chap_soup= bs(requests.get(link).text,features="lxml")
 	title = chap_soup.find("", {"class": "novel_subtitle"}).text
-	body = str(chap_soup.find("", {"class": "novel_honbun"}))
+	body = str(chap_soup.find("", {"id": "novel_honbun"}))
 	body = body.replace("</rb>","").replace("<rb>","").replace("<rp>(</rp>","")
 	c = epub.EpubHtml(title=title, file_name=title+'.xhtml',lang='jp')
 	c.book=book
 	c.set_content("<h2>"+title+"</h2>"+body)
 	book.add_item(c)
 	spine.append(c)
-	print(title)
+	print(t,title)
+	t+=1
 
 book.toc = (epub.Link('toc.xhtml', 'toc', 'toc'),
               (
