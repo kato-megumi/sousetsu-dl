@@ -11,7 +11,8 @@ link = sys.argv[1]
 
 web = "https://ncode.syosetu.com/"
 book = epub.EpubBook() 
-s = requests.get(link).text
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+s = requests.get(link,headers = headers).text
 soup = bs(s,features="lxml") 
 
 
