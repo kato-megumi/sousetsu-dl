@@ -38,7 +38,7 @@ spine = ['nav',intro]
 t=1
 for x in soup.findAll("dd",class_="subtitle"):
 	link = web+x.find('a')['href']
-	chap_soup= bs(requests.get(link).text,features="lxml")
+	chap_soup= bs(requests.get(link,headers=headers).text,features="lxml")
 	title = chap_soup.find("", {"class": "novel_subtitle"}).text
 	body = str(chap_soup.find("", {"id": "novel_honbun"}))
 	body = body.replace("</rb>","").replace("<rb>","").replace("<rp>(</rp>","")
